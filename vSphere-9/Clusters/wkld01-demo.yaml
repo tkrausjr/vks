@@ -1,0 +1,50 @@
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  name: wkld02-test-small
+  namespace: testing123
+spec:
+  clusterNetwork:
+    services:
+      cidrBlocks: ["198.51.100.0/12"]
+    pods:
+      cidrBlocks: ["192.192.2.0/16"]
+    serviceDomain: "cluster.local"
+  topology:
+    class: builtin-generic-v3.3.0
+    version: v1.31.4---vmware.1-fips-vkr.3
+    controlPlane:
+      replicas: 1
+    workers:
+      # node pools
+      machineDeployments:
+        - class: node-pool
+          name: compute
+          replicas: 3
+          variables:
+            overrides:
+            - name: vmClass
+              value: best-effort-small
+    variables:
+      # Default VMClass and will always use for CP Nodes. You can override the machineDeployments
+      # VMClass
+      - name: vmClass
+        value: best-effort-small
+      # default storageclass for control plane and node pool
+      - name: storageClass
+        value: nfs-policy
+      - name: kubernetes
+        value:
+          security:
+            podSecurityStandard:
+              audit: privileged
+              auditVersion: latest
+              deactivated: false
+              enforce: privileged
+              enforceVersion: latest
+              warn: privileged
+              warnVersion: latest
+
+              
+
+

@@ -1,0 +1,22 @@
+apiVersion: vmoperator.vmware.com/v1alpha3
+kind: VirtualMachine
+metadata:
+  name: new-vm-cloudinit
+  namespace: testing123
+  labels:
+    vm-selector: new-vm-cloudinit
+    new-vm-lb-h2gg: vm-lb-selector
+spec:
+  className: best-effort-medium
+  # Friendly image name: noble-server-cloudimg-amd64
+  imageName: vmi-2137f0cc67f5663af
+  storageClass: nfs-policy
+  powerState: PoweredOn
+  network:
+    hostName: new-vm
+    domainName: vcf.lab
+  bootstrap:
+    cloudInit:
+      rawCloudConfig:
+        name: new-vm-cloudinit-bootstrap-secret
+        key: user-data

@@ -1,0 +1,25 @@
+apiVersion: vmoperator.vmware.com/v1alpha3
+kind: VirtualMachine
+metadata:
+  name: simple-vm
+  labels:
+    vm-selector: simple-vm
+    simplevm-lb-svc: vm-lb-selector
+spec:
+  className: best-effort-small
+  # Friendly image name: noble-server-cloudimg-amd64
+  imageName: vmi-7e5a4623151a13971
+  storageClass: vsan-default-storage-policy
+  powerState: PoweredOn
+  bootstrap:
+    cloudInit:
+      cloudConfig:
+        defaultUserEnabled: true
+        ssh_pwauth: true
+        users:
+          - name: demouser
+            passwd:
+              name: simplevm-bootstrap-secret
+              key: demouser-passwd
+            lock_passwd: false
+            sudo: ALL=(ALL) NOPASSWD:ALL

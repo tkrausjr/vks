@@ -1,0 +1,13 @@
+apiVersion: vmoperator.vmware.com/v1alpha3
+kind: VirtualMachineService
+metadata:
+  name: simplevm-lb-svc
+spec:
+  selector:
+    simplevm-lb-svc: vm-lb-selector
+  type: LoadBalancer
+  ports:
+    - name: ssh
+      protocol: TCP
+      port: 22
+      targetPort: 22
