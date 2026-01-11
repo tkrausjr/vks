@@ -1,7 +1,7 @@
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: Cluster
 metadata:
-  name: vks-01
+  name: vks-02-xs
 spec:
   clusterNetwork:
     pods:
@@ -21,7 +21,7 @@ spec:
             enabled: true
             renewalDaysBeforeExpiry: 90
       - name: vmClass
-        value: best-effort-small
+        value: best-effort-xsmall
       - name: storageClass
         value: nfs-datastore-policy
     controlPlane:

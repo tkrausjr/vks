@@ -1,0 +1,16 @@
+apiVersion: vmoperator.vmware.com/v1alpha3
+kind: VirtualMachineService
+metadata:
+  name: vks01-ssh
+  namespace: testing123 # vSphere namespace where the cluster is deployed.
+spec:
+  selector:
+    capv.vmware.com/cluster.name: vks-01
+    capv.vmware.com/cluster.role: controlplane
+#    capv.vmware.com/cluster.name: kc-chris-1  # label on your cluster Node you want to access
+  type: LoadBalancer
+  ports:
+    - name: ssh
+      protocol: TCP
+      port: 22
+      targetPort: 22

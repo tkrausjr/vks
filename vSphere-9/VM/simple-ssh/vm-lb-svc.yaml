@@ -1,10 +1,10 @@
 apiVersion: vmoperator.vmware.com/v1alpha3
 kind: VirtualMachineService
 metadata:
-  name: simplevm-lb-svc
+  name: vks01-ssh
 spec:
   selector:
-    simplevm-lb-svc: vm-lb-selector
+    capv.vmware.com/cluster.name: kc-chris-1
   type: LoadBalancer
   ports:
     - name: ssh
