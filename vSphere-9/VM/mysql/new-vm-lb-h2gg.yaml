@@ -2,7 +2,7 @@ apiVersion: vmoperator.vmware.com/v1alpha3
 kind: VirtualMachineService
 metadata:
   name: new-vm-lb-h2gg
-  namespace: testing123
+  namespace: vcfa-ns-mgsnf
 spec:
   selector:
     new-vm-lb-h2gg: vm-lb-selector

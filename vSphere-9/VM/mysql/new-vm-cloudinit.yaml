@@ -2,7 +2,7 @@ apiVersion: vmoperator.vmware.com/v1alpha3
 kind: VirtualMachine
 metadata:
   name: new-vm-cloudinit
-  namespace: testing123
+  namespace: vcfa-ns-mgsnf
   labels:
     vm-selector: new-vm-cloudinit
     new-vm-lb-h2gg: vm-lb-selector
