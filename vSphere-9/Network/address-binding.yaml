@@ -1,10 +1,10 @@
-## This object is for accessing a VM or vSphere POD inside a VPC with an
-## IP Address from the Public or External IP Space
+## This object is for accessing a VM or POD inside 
+## a VPC with IP Address from the External IP Space
 apiVersion: crd.nsx.vmware.com/v1alpha1
 kind: AddressBinding
 metadata:
-  name: wkld01-demo-compute-4vppm-vfp6c-bftxl # arbitrary name for binding instance
-  namespace: test-vsphere-01 # vSphere namespace where cluster & vms are located
+  name: vks-01-workernode-cb5dq # arbitrary name for binding instance
+  namespace: test-ns01 # vSphere namespace where cluster & vms are located
 spec:
   interfaceName: eth0 # For Ubuntu based VKR
-  vmName: wkld01-demo-compute-4vppm-vfp6c-bftxl # kubectl get vm in the vSphere namespace
+  vmName: vks-01-nfs-datastore-policy-mgg7k-8zxrc-cb5dq # kubectl get vm in the vSphere namespace

@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: conference
+    app.kubernetes.io/part-of: tk-apps
+  name: conference-npl
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: conference-npl
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: conference-npl
+        app.kubernetes.io/part-of: tk-apps
+    spec:
+      containers:
+      - image: harbor.mbentley.net/tkraus/conference-app:v4
+        imagePullPolicy: Always
+        name: conference-app
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+  name: conference-npl-svc
+  namespace: default
+  annotations:
+    nodeportlocal.antrea.io/enabled: "true"
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    run: conference-npl
+  sessionAffinity: None
+  type: LoadBalancer

@@ -1,0 +1,215 @@
+# agent:
+#   interval: 300s
+# clusterRole:
+#   rules: []
+# cpOnlyforDaemonSet: false
+# createNamespace: true
+# daemonSet:
+#   resources:
+#     limits:
+#       cpu: 500m
+#       memory: 500Mi
+#     requests:
+#       cpu: 0m
+#       memory: 100Mi
+# deploymentMode:
+#   resources:
+#     limits:
+#       cpu: 500m
+#       memory: 500Mi
+#     requests:
+#       cpu: 0m
+#       memory: 100Mi
+domainName: cluster.local
+# enabledDaemonSet: true
+# enabledDeployment: true
+# inputPluginsForDaemonSet:
+#   etcd_healthz:
+#     enabled: true
+#   etcd_metrics:
+#     enabled: true
+#     namepass:
+#       - etcd_server_has_leader
+#       - etcd_server_leader_changes_seen_total
+#       - etcd_server_proposals_committed_total
+#       - etcd_server_proposals_applied_total
+#       - etcd_server_proposals_pending
+#       - etcd_server_proposals_failed_total
+#       - etcd_disk_backend_commit_duration_seconds_sum
+#       - etcd_request_duration_seconds_count
+#       - etcd_request_duration_seconds_sum
+#       - etcd_request_duration_seconds_bucket
+#       - etcd_disk_backend_commit_duration_seconds_sum
+#       - etcd_disk_backend_commit_duration_seconds
+#       - etcd_disk_backend_commit_duration_seconds_count
+#       - etcd_mvcc_db_total_size_in_bytes
+#       - etcd_mvcc_db_total_size_in_use_in_bytes
+#       - etcd_network_peer_round_trip_time_seconds
+#       - etcd_disk_wal_fsync_duration_seconds
+#       - etcd_network_peer_received_failures_total
+#       - etcd_server_quota_backend_bytes
+#   hostCPU:
+#     enabled: true
+#     fieldinclude:
+#       - time_user
+#       - time_system
+#       - time_idle
+#       - time_active
+#       - time_iowait
+#       - time_irq
+#       - time_softirq
+#       - usage_user
+#       - usage_system
+#       - usage_active
+#       - usage_iowait
+#       - usage_irq
+#       - usage_softirq
+#   hostDisk:
+#     enabled: true
+#   hostDiskIO:
+#     enabled: true
+#     fieldinclude:
+#       - merged_reads
+#       - merged_writes
+#   hostMem:
+#     enabled: true
+#     fieldexclude: []
+#     fieldinclude:
+#       - active
+#       - available
+#       - available_percent
+#       - buffered
+#       - cached
+#       - free
+#       - used
+#       - used_percent
+#   hostNet:
+#     enabled: true
+#   hostNetStat:
+#     enabled: true
+#   kube_apiserver_healthz:
+#     enabled: true
+#   kube_apiserver_metrics:
+#     enabled: true
+#     namepass:
+#       - apiserver_request_total
+#       - apiserver_current_inflight_requests
+#       - apiserver_current_inqueue_requests
+#       - apiserver_admission_webhook_admission_duration_seconds
+#       - go_goroutines
+#       - workqueue_adds_total
+#       - workqueue_depth
+#       - workqueue_queue_duration_seconds_bucket
+#   kube_controller_manager_healthz:
+#     enabled: true
+#   kube_controller_manager_metrics:
+#     enabled: true
+#     namepass:
+#       - workqueue_depth
+#       - workqueue_queue_duration_seconds_bucket
+#       - leader_election_master_status
+#   kube_scheduler_healthz:
+#     enabled: true
+#   kube_scheduler_metrics:
+#     enabled: true
+#     namepass:
+#       - workqueue_depth
+#       - workqueue_adds_total
+#       - workqueue_queue_duration_seconds_bucket
+#       - scheduler_pending_pods
+#   kubelet_metrics:
+#     enabled: true
+#     namepass:
+#       - container_cpu_cfs_throttled_periods_total
+#       - container_network_receive_errors_total
+#       - container_memory_working_set_bytes
+#       - container_network_receive_packets_dropped_total
+#       - container_network_receive_packets_total
+#       - container_network_transmit_errors_total
+#       - container_network_transmit_packets_dropped_total
+#       - container_network_transmit_packets_total
+#       - container_fs_reads_total
+#       - container_fs_writes_total
+#       - container_fs_reads_bytes_total
+#       - container_fs_writes_bytes_total
+#       - container_cpu_cfs_periods_total
+#       - container_memory_failcnt
+#       - container_cpu_usage_seconds_total
+#       - kubelet_running_pods
+#       - kubelet_running_containers
+#       - kubernetes_node_cpu_usage_nanocores
+#       - kubernetes_node_memory_usage_bytes
+#       - kubernetes_pod_container_cpu_usage_core_nanoseconds
+#       - kubernetes_pod_container_cpu_usage_nanocores
+#       - kubernetes_pod_container_memory_rss_bytes
+#       - kubernetes_pod_container_memory_usage_bytes
+#       - kubernetes_pod_network_tx_errors
+#       - kubernetes_pod_network_tx_bytes
+#       - kubernetes_pod_volume_available_bytes
+#       - kubernetes_pod_volume_capacity_bytes
+#       - kubernetes_pod_volume_used_bytes
+# inputPluginsForDeployment:
+#   dcgm_exporter_metrics:
+#     dcgm_services:
+#       - http://nvidia-dcgm-exporter.gpu-operator.svc.cluster.local:9400/metrics
+#     enabled: false
+#     name_prefix: dcgm_metrics_
+#     namepass:
+#       - DCGM_FI_DEV_MEM_COPY_UTIL
+#       - DCGM_FI_DEV_GPU_UTIL
+#       - DCGM_FI_DEV_VGPU_MEMORY_USAGE
+#   kube_state_metrics:
+#     enabled: true
+#     kubernetes_services:
+#       - http://prometheus-kube-state-metrics.tanzu-system-monitoring.svc.cluster.local:8080/metrics
+#     name_prefix: ksm_metrics_
+#     namepass:
+#       - kube_pod_container_resource_requests
+#       - kube_pod_container_resource_limits
+#       - kube_pod_container_state_started
+#       - kube_pod_container_info
+#       - kube_pod_owner
+#       - kube_pod_info
+#       - kube_pod_container_status_restarts_total
+#       - kube_pod_status_phase
+#       - kube_deployment_status_condition
+#       - kube_deployment_spec_replicas
+#       - kube_deployment_status_replicas_available
+#       - kube_persistentvolumeclaim_status_phase
+#       - kube_persistentvolume_csi_attributes
+#       - kube_persistentvolumeclaim_info
+#       - kube_persistentvolume_volume_mode
+#       - kube_storageclass_info
+#       - kube_persistentvolume_annotations
+#       - kube_persistentvolume_capacity_bytes
+#       - kube_persistentvolume_status_phase
+#       - kube_persistentvolume_claim_ref
+#       - kube_persistentvolume_labels
+#       - kube_persistentvolume_info
+#       - kube_persistentvolume_created
+#       - kube_persistentvolume_deletion_timestamp
+#       - kube_volumeattachment_spec_source_persistentvolume
+#       - kube_pod_spec_volumes_persistentvolumeclaims_info
+#       - kube_volumeattachment_info
+#   node_exporter_metrics:
+#     enabled: true
+#     kubernetes_services:
+#       - http://prometheus-node-exporter.tanzu-system-monitoring.svc.cluster.local:9100/metrics
+#     name_prefix: ksm_metrics_
+isMetricProxyConfigured: true
+# namespace: tanzu-system-telegraf
+# outputPlugins:
+#   file:
+#     enabled: true
+#     files:
+#       - stdout
+#     namepass:
+#       - error
+#       - fail
+#   proxyServer:
+#     clusterUUID: <cluster uuid>
+#     enabled: false
+#     ip: <ip>
+#     port: 10093
+#     serviceDomain: managedcluster.local
+# priorityClassName: ""

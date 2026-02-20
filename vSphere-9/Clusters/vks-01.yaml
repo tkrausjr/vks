@@ -6,7 +6,7 @@ spec:
   clusterNetwork:
     pods:
       cidrBlocks:
-        - 192.168.156.0/20
+        - 192.168.144.0/20
     services:
       cidrBlocks:
         - 10.96.0.0/12
