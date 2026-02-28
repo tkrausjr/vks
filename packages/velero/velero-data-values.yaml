@@ -1,0 +1,12 @@
+# https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vsphere-supervisor-services-and-standalone-components/latest/managing-vsphere-kuberenetes-service-clusters-and-workloads/backup-and-restore-workloads-using-the-velero-plugin-for-vsphere/velero-117/velero-package-reference.html
+#
+backupStorageLocation:
+  bucket: backup
+  config:
+    region: "minio"
+    s3ForcePathStyle: "true"
+    s3Url: "http://192.168.22.44"
+  credential: |
+    [default]
+    aws_access_key_id=akeyIwillusealways-SAMPLE
+    aws_secret_access_key=akeyIwillusealways-SAMPLE
