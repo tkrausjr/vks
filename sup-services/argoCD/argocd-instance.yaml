@@ -2,7 +2,6 @@ apiVersion: argocd-service.vsphere.vmware.com/v1alpha1
 kind: ArgoCD
 metadata:
   name: argocd-1
-  namespace: shared-svcs
 spec:
   version: 3.0.19+vmware.1-vks.1
   applicationSet:
