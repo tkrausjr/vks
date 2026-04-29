@@ -1,0 +1,7 @@
+# To add Supervisor Cluster Proxy Settings
+# You can use vSphere Client, Supervisor Management, Click the Supervisor, Network, Proxy Settings.
+
+# Exclusion List - No Proxy
+# Comma separated list in the following format
+
+10.1.0.0,10.1.1.0,10.1.10.128,10.1.7.0,vcf.lab
