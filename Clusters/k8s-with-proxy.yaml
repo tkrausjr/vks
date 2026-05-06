@@ -1,0 +1,45 @@
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  name: k8s-with-proxy
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+        - 192.168.156.0/20
+    services:
+      cidrBlocks:
+        - 10.96.0.0/12
+    serviceDomain: cluster.local
+  topology:
+    class: builtin-generic-v3.3.0
+    version: v1.35.2---vmware.1-vkr.3
+    variables:
+      - name: osConfiguration
+        value:
+          ntp:
+            servers:
+              - ntp.test
+          systemProxy:
+            http: http://1.2.3.4:2139
+            https: http://4.3.2.1:2139
+            noProxy:
+              - no.proxy.test1
+              - no.proxy.test2
+      - name: vmClass
+        value: best-effort-small
+      - name: storageClass
+        value: cluster-wld01-01a-storage-policy
+    controlPlane:
+      replicas: 1
+      metadata:
+        annotations:
+          run.tanzu.vmware.com/resolve-os-image: os-name=photon, content-library=cl-1a6567e672f00e885
+    workers:
+      machineDeployments:
+        - class: node-pool
+          name: kubernetes-cluster-hsfu-np-7p4q
+          replicas: 1
+          metadata:
+            annotations:
+              run.tanzu.vmware.com/resolve-os-image: os-name=photon, content-library=cl-1a6567e672f00e885
