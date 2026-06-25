@@ -46,8 +46,57 @@ k get addoninstalls -A -n demo1
     demo1                      cluster-istio                                   istio                           29s
     demo1                      cluster-prom                                    prometheus                      29s
 
+kctx supervisor-ctx:demo1
+k get clusteraddon
+
 ## Create the workload cluster
 k apply -f add-ons/workload-vsphere-vks1-cluster.yaml
     cluster.cluster.x-k8s.io/workload-vsphere-vks1 created
 
 ## Validate that the add-ons were installed to the cluster.
+ vcf context create -e 10.1.8.132 --username administrator@wld.sso --workload-cluster-name workload-vsphere-vks1 --workload-cluster-namespace demo1 --insecure-skip-tls-verify --auth-type basic
+    Provide  a name for the context:
+    Privde Password:
+    SUCCESS
+
+kctx workload-vsphere-vks1:workload-vsphere-vks1
+
+k get app -A
+k get pkgi -A
+
+k get all -n headlamp                
+    NAME                            READY   STATUS    RESTARTS   AGE
+    pod/headlamp-774b46b99b-xd4d6   1/1     Running   0          17m
+    NAME               TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)         AGE
+    service/headlamp   LoadBalancer   240.1.6.117   10.1.8.140    443:31773/TCP   21m
+
+    NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+    deployment.apps/headlamp   1/1     1            1           21m
+    NAME                                  DESIRED   CURRENT   READY   AGE
+    replicaset.apps/headlamp-774b46b99b   1         1         1       21m
+
+#
+# Now to access headlamp and test it.
+# Reference https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-consumption/latest/managing-vsphere-kuberenetes-service-clusters-and-workloads/installing-standard-packages-on-tkg-service-clusters/installing-standard-packages-on-tkg-cluster-using-tkr-for-vsphere-8-x/install-headlamp/service-expose.html
+
+
+
+# Create SA & Token (The clusterrolebinding already exists)
+kubectl -n kube-system create serviceaccount headlamp-admin
+    serviceaccount/headlamp-admin created
+
+#Create the CRB
+kubectl create clusterrolebinding headlamp-admin-two --serviceaccount=kube-system:headlamp-admin --clusterrole=cluster-admin
+    clusterrolebinding.rbac.authorization.k8s.io/headlamp-admin created
+
+ k create token headlamp-admin -n kube-system
+eyJhbGciOiJSUzI1NiIsImtpZCI6IkNWdERocnhJclRvNzBsa1h0T0xqTkFqcnpJYWxERVNaNjhpMlpkV0Q5WVEifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzgyNDEzMDU5LCJpYXQiOjE3ODI0MDk0NTksImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwianRpIjoiYzlhMDI3ZGYtMWJiNC00MWRkLWFjOTctNDFjNzMwYTk5YTViIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJoZWFkbGFtcC1hZG1pbiIsInVpZCI6ImQxODVhMDI0LTVjZmMtNGE2NC1iNDRmLTRlNzAxOThhMWY0YiJ9fSwibmJmIjoxNzgyNDA5NDU5LCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06aGVhZGxhbXAtYWRtaW4ifQ.qBd0P2haL07dXVtV_ITWYEeOLM5dOChNJAbJswMeTS2xycvK1MK3HOQcqxKFVVw_3LuHDRB_zvnUVxrABKjSqdxgwcENoZroIFEO5Wqv30jzQzWWEWgfsYy6fEX56tf6s_4BRR8VaPoAY0TLS7QCc9lZPupXt8axIsTAqKlfpDij8EaxoZ2HvSnTLSN8ql_DkxbTb2mvRTNoue-HngfX0_Y6-B9_39SARPEKMtyz9xDELmLea1v-a7OCJJjKsmPLAYv75jCOaloSdYO_AsIJyDW0InAtpdVM3oJF-NSREz7ipvRDegJqHsBpcWGRsnAfu-Z1EE4E4aEZJX6fCTDECg
+
+
+
+In Firefox access the External IP on https
+https://10.1.8.140
+PASTE in the TOKEN from above.
+SUCCESS HEADLAMP UI 
+But we need a Service Account Token
+SUCCESS
