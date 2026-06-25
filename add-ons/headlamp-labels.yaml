@@ -7,6 +7,6 @@ spec:
   addonRef:
     name: headlamp # Install this addon
   clusters:
-  - selector: # Select clusters with this labels       
+  - selector: # Select clusters with this labels      
       matchLabels:
         addons-install: headlamp    
