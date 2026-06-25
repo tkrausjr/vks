@@ -1,0 +1,12 @@
+apiVersion: addons.kubernetes.vmware.com/v1alpha1
+kind: AddonInstall
+metadata:
+  name: headlamp
+# namespace: test
+spec:
+  addonRef:
+    name: headlamp # Install this addon
+  clusters:
+  - selector: # Select clusters with this labels       
+      matchLabels:
+        addons-install: headlamp    
