@@ -1,0 +1,35 @@
+REFERENCE - https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-service-administration-and-development/9-0/managing-vsphere-kubernetes-service/administering-kubernetes-releases-for-tkg-service-clusters/using-kubernetes-releases-with-tkg-service-clusters/building-your-own-vkr-with-image-baker.html
+
+vcf kubernetes-release get
+
+  NAME                           VERSION                      TYPE  COMPATIBLE  ACTIVE  
+  v1.33.1---vmware.1-fips-vkr.2  v1.33.1+vmware.1-fips-vkr.2        True        True    
+  v1.33.3---vmware.1-fips-vkr.1  v1.33.3+vmware.1-fips-vkr.1        True        True    
+  v1.33.6---vmware.1-fips-vkr.2  v1.33.6+vmware.1-fips-vkr.2        True        True    
+  v1.34.1---vmware.1-vkr.4       v1.34.1+vmware.1-vkr.4             True        True    
+  v1.34.2---vmware.2-vkr.2       v1.34.2+vmware.2-vkr.2             True        True    
+  v1.34.8---vmware.1-vkr.1       v1.34.8+vmware.1-vkr.1             True        True    
+  v1.35.2---vmware.1-vkr.3       v1.35.2+vmware.1-vkr.3             True        True    
+  v1.35.5---vmware.1-vkr.1       v1.35.5+vmware.1-vkr.1             True        True    
+  v1.36.1---vmware.4-vkr.5       v1.36.1+vmware.4-vkr.5             True        True    
+
+holuser@console:~/field-lab/vcfa-terraform-examples/argo-e2e$   vcf kubernetes-release os get v1.36.1---vmware.4-vkr.5
+
+  NAME    VERSION  ARCH   
+  ubuntu  24.04    amd64  
+  photon  5        amd64  
+  ubuntu  22.04    amd64  
+
+-------
+DOC Prerequisites - Linux 
+To build Linux images, the following prerequisites must be installed in your environment:
+VALIDATION with Field Lab Jumphost
+ - YES - VCF CLI with kubernetes-release plugin installed, and upgraded to the latest 3.6 version.
+ - YES -(24.04) Linux AMD64 (Ubuntu 22.04+ recommended) installed on the host machine
+ - YES -(29.3.1 ) Docker (https://docs.docker.com/engine/install/)
+ - YES? - SITE says this should be installed by any version of docker enginer later than 23.0 )BuildKit Version 0.21.0+ (https://github.com/moby/buildkit/releases)
+ - NO - xsfprogs (provides mkfs.xfs) (sudo apt install xfsprogs - did the trick)
+open-vmdk Version 0.3.11+ (https://github.com/vmware/open-vmdk)
+Python Version 3.10+ with packages: semver, jinja2, jinja2-time, pyyaml
+
+-------

@@ -1,0 +1,10 @@
+## This object is for accessing a VM or POD inside 
+## a VPC with IP Address from the External IP Space
+apiVersion: crd.nsx.vmware.com/v1alpha1
+kind: AddressBinding
+metadata:
+  name: binding-vks-tuned-vra-nx22k-6lmsj # arbitrary name for binding instance
+  namespace: vcfa:shared-svcs-hgybt:default-project # vSphere namespace where cluster & vms are located
+spec:
+  interfaceName: eth0 # For Ubuntu based VKR
+  vmName: vks-tuned-vra-nx22k-6lmsj # kubectl get vm in the vSphere namespace
