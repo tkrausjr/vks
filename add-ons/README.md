@@ -29,6 +29,7 @@ k get app -n vmware-system-tkg demo-cl01-headlamp -oyaml
 k get pkgi demo-cl01-headlamp -n vmware-system-tkg -oyaml
 
 # To test Navneets full nav-full-headlamp-exmpample.yaml
+```
 1 - Create a demo1 vSphere Namespace
 cd ~/Downloads/vks/
 k apply -f add-ons/nav-full-headlamp-example.yaml                 
@@ -48,7 +49,7 @@ k get addoninstalls -A -n demo1
 
 kctx supervisor-ctx:demo1
 k get clusteraddon
-
+```
 ## Create the workload cluster
 k apply -f add-ons/workload-vsphere-vks1-cluster.yaml
     cluster.cluster.x-k8s.io/workload-vsphere-vks1 created

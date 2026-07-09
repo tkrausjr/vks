@@ -2,7 +2,7 @@ apiVersion: cluster.x-k8s.io/v1beta2
 kind: Cluster
 metadata:
   name: workload-vsphere-vks1
-  namespace: demo1
+  namespace: addons-testing
 spec:
   clusterNetwork:
     pods:
