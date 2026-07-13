@@ -1,1 +1,26 @@
-# Put static here.                          
+# Put static here.  
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: static-nfs-pv
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /exported/path/on/nfs
+    server: 192.168.1.50 # Your NFS Server IP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: static-nfs-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "" # Must be empty to bind with the static PV
+  resources:
+    requests:
+      storage: 50Gi
