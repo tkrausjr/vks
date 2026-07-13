@@ -10,8 +10,8 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    path: //nfsshare
-    server: 10.110.72.149 # Your NFS Server IP from kubectl get service nfs-server-test-service 
+    path: /
+    server: 10.101.133.185 # Your NFS Server IP from kubectl get service nfs-server-test-service 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
