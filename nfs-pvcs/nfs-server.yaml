@@ -5,7 +5,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: default # Replace with your VKS vSphere StorageClass name
+  storageClassName: cluster-wld01-01a-optimal-datastore-default-policy-autoraid # Replace with your VKS vSphere StorageClass name
   resources:
     requests:
       storage: 10Gi
@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: nfs-server
-        image: itsthenetwork/nfs-server-alpine:latest
+        image: harbor.mbentley.net/tkraus/nfs-server-alpine:latest
         ports:
         - name: nfs
           containerPort: 2049
