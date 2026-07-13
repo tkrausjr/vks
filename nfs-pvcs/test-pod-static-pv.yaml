@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nfs-client-pod-1
+  labels:
+    app: nfs-test
+spec:
+  containers:
+  - name: web-server
+    image: nginx:alpine
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: nfs-storage-volume
+      mountPath: /usr/share/nginx/html # The folder inside your container where the NFS share will appear
+  volumes:
+  - name: nfs-storage-volume
+    persistentVolumeClaim:
+      claimName: static-nfs-pvc # Must exactly match the PVC name from Method 2
