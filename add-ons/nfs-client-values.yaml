@@ -1,0 +1,74 @@
+# controller:
+#   nodeSelector:
+#   resources:
+#     csi-provisioner:
+#       limits:
+#         cpu: ""
+#         memory: 400Mi
+#       requests:
+#         cpu: 10m
+#         memory: 20Mi
+#     csi-resizer:
+#       limits:
+#         cpu: ""
+#         memory: 400Mi
+#       requests:
+#         cpu: 10m
+#         memory: 20Mi
+#     csi-snapshotter:
+#       limits:
+#         cpu: ""
+#         memory: 200Mi
+#       requests:
+#         cpu: 10m
+#         memory: 20Mi
+#     liveness-probe:
+#       limits:
+#         cpu: ""
+#         memory: 100Mi
+#       requests:
+#         cpu: 10m
+#         memory: 20Mi
+#     nfs:
+#       limits:
+#         cpu: ""
+#         memory: 200Mi
+#       requests:
+#         cpu: 10m
+#         memory: 20Mi
+# namespace: nfs-client
+# nfs:
+#   path: /nfs-storage
+#   server: ""
+# node:
+#   resources:
+#     liveness-probe:
+#       limits:
+#         cpu: ""
+#         memory: 100Mi
+#       requests:
+#         cpu: 10m
+#         memory: 20Mi
+#     nfs:
+#       limits:
+#         cpu: ""
+#         memory: 300Mi
+#       requests:
+#         cpu: 10m
+#         memory: 20Mi
+#     node-driver-registrar:
+#       limits:
+#         cpu: ""
+#         memory: 100Mi
+#       requests:
+#         cpu: 10m
+#         memory: 20Mi
+# nsLimitRange:
+#   defaultRequests:
+#     cpu: 10m
+#     memory: 20Mi
+# storageClass:
+#   create: true
+#   defaultClass: "false"
+#   name: example-ss-nfs-client
+# storageClasses: []
