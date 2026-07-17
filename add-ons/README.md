@@ -34,6 +34,7 @@ k get pkgi demo-cl01-headlamp -n vmware-system-tkg -oyaml
 # Note this -testing version looks for the addons-install=headlamp   LABEL and installs the addons on any cluster with this label.
 ```
 1 - Create a addons-testing vSphere Namespace
+```
 cd ~/Downloads/vks/
 k apply -f add-ons/nav-full-headlamp-example.yaml                 
     addoninstall.addons.kubernetes.vmware.com/cluster-headlamp created
