@@ -67,9 +67,11 @@ k label cluster/demo-cl01 -n shared-svcs-7w8d9 addons-install=headlamp
 # Depending on the type of vSphere Namespace where cluster lives you will create a Cluster Context.
 
 # Option 1-Creates a context for a k8s (vSphere UI) created vSphere Namespace
-```
+
 vcf context create supervisor-wkld-a -e 10.1.8.132 -u administrator@wld.sso --insecure-skip-tls-verify --auth-type basic
+```
 ## This will provide contexts for Supervisor and all Namespaces, To add an VKS cluster context as well for a cluster in the vSphere Namespace. 
+```
 vcf context create vks-01-headlamp -e 10.1.8.132 -u administrator@wld.sso --insecure-skip-tls-verify --workload-cluster-name  vks-01-headlamp-addon --workload-cluster-namespace addons-testing
 vcf context use vks-01-headlamp:vks-01-headlamp-addon 
 k get no
@@ -110,10 +112,8 @@ k get all -n headlamp
 #
 # Now to access headlamp and test it.
 # Reference https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-consumption/latest/managing-vsphere-kuberenetes-service-clusters-and-workloads/installing-standard-packages-on-tkg-service-clusters/installing-standard-packages-on-tkg-cluster-using-tkr-for-vsphere-8-x/install-headlamp/service-expose.html
-
-
-
 # Create SA & Token (The clusterrolebinding already exists)
+```
 kubectl -n kube-system create serviceaccount headlamp-admin
     serviceaccount/headlamp-admin created
 
@@ -123,7 +123,7 @@ kubectl create clusterrolebinding headlamp-admin-two --serviceaccount=kube-syste
 
  k create token headlamp-admin -n kube-system
 eyJhbGciOiJSUzI1NiIsImtpZCI6IkNWdERocnhJclRvNzBsa1h0T0xqTkFqcnpJYWxERVNaNjhpMlpkV0Q5WVEifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzgyNDEzMDU5LCJpYXQiOjE3ODI0MDk0NTksImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwianRpIjoiYzlhMDI3ZGYtMWJiNC00MWRkLWFjOTctNDFjNzMwYTk5YTViIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJoZWFkbGFtcC1hZG1pbiIsInVpZCI6ImQxODVhMDI0LTVjZmMtNGE2NC1iNDRmLTRlNzAxOThhMWY0YiJ9fSwibmJmIjoxNzgyNDA5NDU5LCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06aGVhZGxhbXAtYWRtaW4ifQ.qBd0P2haL07dXVtV_ITWYEeOLM5dOChNJAbJswMeTS2xycvK1MK3HOQcqxKFVVw_3LuHDRB_zvnUVxrABKjSqdxgwcENoZroIFEO5Wqv30jzQzWWEWgfsYy6fEX56tf6s_4BRR8VaPoAY0TLS7QCc9lZPupXt8axIsTAqKlfpDij8EaxoZ2HvSnTLSN8ql_DkxbTb2mvRTNoue-HngfX0_Y6-B9_39SARPEKMtyz9xDELmLea1v-a7OCJJjKsmPLAYv75jCOaloSdYO_AsIJyDW0InAtpdVM3oJF-NSREz7ipvRDegJqHsBpcWGRsnAfu-Z1EE4E4aEZJX6fCTDECg
-
+```
 
 
 In Firefox access the External IP on https
