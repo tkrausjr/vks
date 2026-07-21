@@ -111,7 +111,9 @@ k get all -n headlamp
 ```
 #
 # Now to access headlamp and test it.
-# Reference https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-consumption/latest/managing-vsphere-kuberenetes-service-clusters-and-workloads/installing-standard-packages-on-tkg-service-clusters/installing-standard-packages-on-tkg-cluster-using-tkr-for-vsphere-8-x/install-headlamp/service-expose.html
+[Broadcom Reference](#https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-consumption/latest/managing-vsphere-kuberenetes-service-clusters-and-workloads/installing-standard-packages-on-tkg-service-clusters/installing-standard-packages-on-tkg-cluster-using-tkr-for-vsphere-8-x/install-headlamp/service-expose.html) 
+
+
 # Create SA & Token (The clusterrolebinding already exists)
 ```
 kubectl -n kube-system create serviceaccount headlamp-admin
