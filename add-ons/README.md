@@ -17,7 +17,7 @@ vcf context use supervisor-ctx
 k get addoninstalls -n shared-svcs-7w8d9
     NAME       ADDON      PAUSED   AGE
     headlamp   headlamp            52m
- get addoninstalls -n shared-svcs-7w8d9 -oyaml | yq .status
+k get addoninstalls -n shared-svcs-7w8d9 -oyaml | yq .status
 # Note this shows a cluster was found and matched by the labels
 
 # Switch to Cluster context
