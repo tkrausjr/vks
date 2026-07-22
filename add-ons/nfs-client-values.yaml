@@ -1,3 +1,24 @@
+k get cm -A | grep nfs-client
+    vmware-system-tkg                    demo-cl01-nfs-client.app                                1      114m
+    vmware-system-tkg                    demo-cl01-nfs-client.app-change-mdlg6                   1      114m
+---
+k logs pod/csi-nfs-controller-6fd98779c8-g58wv -n nfs-client -c nfs
+I0715 20:06:25.995052       1 nfs.go:90] Driver: nfs.csi.k8s.io version: N/A
+I0715 20:06:25.995335       1 nfs.go:148] 
+DRIVER INFORMATION:
+-------------------
+Build Date: N/A
+Compiler: gc
+Driver Name: nfs.csi.k8s.io
+Driver Version: N/A
+Git Commit: N/A
+Go Version: go1.26.3-X:boringcrypto
+Platform: linux/amd64
+
+---
+
+# VKS Add-on: NFS Client Provisioner
+
 # controller:
 #   nodeSelector:
 #   resources:
