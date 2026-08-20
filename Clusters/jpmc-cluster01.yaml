@@ -1,0 +1,82 @@
+apiVersion: cluster.x-k8s.io/v1beta2
+kind: Cluster
+metadata:
+  name: jpmc-demo-cluster01
+  namespace: jpmc-namespace01
+  labels:
+    sealID: 1467933j
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 240.0.0.0/20
+    serviceDomain: cluster.local
+    services:
+      cidrBlocks:
+      - 240.1.0.0/20
+  topology:
+    classRef:
+      name: builtin-generic-v3.7.0
+      namespace: vmware-system-vks-public
+    controlPlane:
+      metadata:
+        annotations:
+          run.tanzu.vmware.com/resolve-os-image: os-name=ubuntu,os-version=24.04
+      replicas: 1
+      variables:
+        overrides:
+        - name: vmClass
+          value: best-effort-large
+    variables:
+    - name: storageClass
+      value: vsan-default-storage-policy
+    - name: vmClass
+      value: best-effort-medium
+    - name: volumes
+      value:
+      - capacity: 25Gi
+        mountPath: /var/lib/containerd
+        name: containerd
+        storageClass: vsan-default-storage-policy
+      - capacity: 20Gi
+        mountPath: /var/lib/kubelet
+        name: kubelet
+        storageClass: vsan-default-storage-policy
+    - name: kubernetes
+      value:
+        certificateRotation:
+          enabled: true
+          renewalDaysBeforeExpiry: 90
+        security:
+          podSecurityStandard:
+            audit: privileged
+            auditVersion: latest
+            deactivated: false
+            enforce: privileged
+            enforceVersion: latest
+            warn: privileged
+            warnVersion: latest
+    - name: vsphereOptions
+      value:
+        persistentVolumes:
+          availableStorageClasses:
+          - vsan-default-storage-policy
+          defaultStorageClass: vsan-default-storage-policy
+    - name: osConfiguration
+      value:
+        ntp:
+          servers:
+          - ntp.broadcom.net
+        sshd:
+          banner: '---AUTHORIZED ACCESS ONLY--- Use of this system is restricted to
+            authorized users for authorized activities only. '
+    version: v1.35.2---vmware.1-vkr.3
+    workers:
+      machineDeployments:
+      - class: node-pool
+        metadata:
+          annotations:
+            cluster.x-k8s.io/cluster-api-autoscaler-node-group-max-size: "5"
+            cluster.x-k8s.io/cluster-api-autoscaler-node-group-min-size: "1"
+            run.tanzu.vmware.com/resolve-os-image: os-name=ubuntu,os-version=24.04
+        name: node-pool-1
