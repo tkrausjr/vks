@@ -1,7 +1,7 @@
 apiVersion: cluster.x-k8s.io/v1beta2
 kind: Cluster
 metadata:
-  name: jpmc-cluster-01b
+  name: jpmc-cluster-01c-vap
   namespace: demo-01
   labels:
     sealID: 1467933j
@@ -26,12 +26,12 @@ spec:
       variables:
         overrides:
         - name: vmClass
-          value: best-effort-large
+          value: best-effort-small
     variables:
     - name: storageClass
       value: vsan-default-storage-policy
     - name: vmClass
-      value: best-effort-medium
+      value: best-effort-small
     - name: volumes
       value:
       - capacity: 15Gi

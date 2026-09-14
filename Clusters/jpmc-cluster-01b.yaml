@@ -4,7 +4,6 @@ metadata:
   name: jpmc-cluster-01b
   namespace: demo-01
   labels:
-    sealID: 1467933j
 spec:
   clusterNetwork:
     pods:
