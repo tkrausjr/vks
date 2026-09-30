@@ -1,0 +1,10 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: "cluster-binding-test.example.com"
+spec:
+  policyName: "cluster-policy.example.com"
+  validationActions: [Deny]
+
+
+  

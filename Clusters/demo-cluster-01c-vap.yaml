@@ -4,7 +4,7 @@ metadata:
   name: demo-cluster-01c-vap
   namespace: demo-01
   labels:
-    sealID: 1467933j
+#    sealID: 1467933j
 spec:
   clusterNetwork:
     pods:
@@ -78,5 +78,5 @@ spec:
           annotations:
             run.tanzu.vmware.com/resolve-os-image: os-name=ubuntu,os-version=24.04
         name: np-1
-        replicas: 1
+        replicas: 3
 
