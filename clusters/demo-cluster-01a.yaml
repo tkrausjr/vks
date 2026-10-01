@@ -31,7 +31,7 @@ spec:
     - name: storageClass
       value: vsan-default-storage-policy
     - name: vmClass
-      value: best-effort-medium
+      value: best-effort-large
     - name: volumes
       value:
       - capacity: 15Gi
@@ -78,4 +78,4 @@ spec:
           annotations:
             run.tanzu.vmware.com/resolve-os-image: os-name=ubuntu,os-version=24.04
         name: np-1
-        replicas: 1
+        replicas: 2
