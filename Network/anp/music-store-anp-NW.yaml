@@ -1,0 +1,242 @@
+---
+# 1. Baseline: Default Deny All (Ingress & Egress) for the application
+apiVersion: crd.antrea.io/v1beta1
+kind: AntreaNetworkPolicy
+metadata:
+  name: music-store-default-deny
+spec:
+  tier: securityops
+  priority: 100
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app-name: music-store # Applies to all microservices based on shared label[cite: 1, 2, 3, 4, 5, 6, 7]
+  ingress:
+    - action: Drop
+  egress:
+    - action: Drop
+
+---
+# 2. Baseline: Allow CoreDNS Egress (Required for internal service name resolution)
+apiVersion: crd.antrea.io/v1beta1
+kind: AntreaNetworkPolicy
+metadata:
+  name: music-store-allow-dns
+spec:
+  tier: application
+  priority: 10
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app-name: music-store
+  egress:
+    - action: Allow
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+
+---
+# 3. Allow External Ingress to LoadBalancers (Store & Traffic Generator)
+apiVersion: crd.antrea.io/v1beta1
+kind: AntreaNetworkPolicy
+metadata:
+  name: music-store-external-ingress
+spec:
+  tier: application
+  priority: 20
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app: music-store-1
+    - podSelector:
+        matchLabels:
+          app: traffic-generator
+  ingress:
+    - action: Allow
+      ports:
+        - protocol: TCP
+          port: 5000 # Store service port[cite: 4]
+        - protocol: TCP
+          port: 5004 # Traffic Generator port[cite: 2]
+
+---
+# 4. Intra-Application Ingress Rules
+apiVersion: crd.antrea.io/v1beta1
+kind: AntreaNetworkPolicy
+metadata:
+  name: music-store-internal-ingress
+spec:
+  tier: application
+  priority: 30
+  # Allow Store Service Ingress from Cart and Order Services
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app: music-store-1
+  ingress:
+    - action: Allow
+      from:
+        - podSelector:
+            matchLabels:
+              app: cart-service
+        - podSelector:
+            matchLabels:
+              app: order-service
+        - podSelector:
+            matchLabels:
+              app: traffic-generator
+      ports:
+        - protocol: TCP
+          port: 5000  # [cite: 2, 3, 4, 6]
+  # Allow Users Service Ingress from Store and Traffic Generator
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app: users-service
+  ingress:
+    - action: Allow
+      from:
+        - podSelector:
+            matchLabels:
+              app: music-store-1
+        - podSelector:
+            matchLabels:
+              app: traffic-generator
+      ports:
+        - protocol: TCP
+            port: 5003   # [cite: 1, 2, 4]
+
+  # Allow Cart Service Ingress from Store and Traffic Generator
+  - appliedTo:
+      - podSelector:
+          matchLabels:
+            app: cart-service
+    ingress:
+      - action: Allow
+        from:
+          - podSelector:
+              matchLabels:
+                app: music-store-1
+          - podSelector:
+              matchLabels:
+                app: traffic-generator
+        ports:
+          - protocol: TCP
+            port: 5002  # [cite: 2, 4, 6]
+
+  # Allow Order Service Ingress from Store, Cart, Chat, and Traffic Generator
+  - appliedTo:
+      - podSelector:
+          matchLabels:
+            app: order-service
+    ingress:
+      - action: Allow
+        from:
+          - podSelector:
+              matchLabels:
+                app: music-store-1
+          - podSelector:
+              matchLabels:
+                app: cart-service
+          - podSelector:
+              matchLabels:
+                app: chat-service
+          - podSelector:
+              matchLabels:
+                app: traffic-generator
+        ports:
+          - protocol: TCP
+            port: 5001 # [cite: 2, 3, 4, 6, 7]
+
+  # Allow Chat Service Ingress from Store
+  - appliedTo:
+      - podSelector:
+          matchLabels:
+            app: chat-service
+    ingress:
+      - action: Allow
+        from:
+          - podSelector:
+              matchLabels:
+                app: music-store-1
+        ports:
+          - protocol: TCP
+            port: 5005 # [cite: 4, 7]
+
+  # Allow Postgres DB Ingress from Store and Chat Services
+  - appliedTo:
+      - podSelector:
+          matchLabels:
+            app: postgres
+    ingress:
+      - action: Allow
+        from:
+          - podSelector:
+              matchLabels:
+                app: music-store-1
+          - podSelector:
+              matchLabels:
+                app: chat-service
+        ports:
+          - protocol: TCP
+            port: 5432 # [cite: 4, 5, 7]
+
+---
+# 5. Egress Rules for Services
+apiVersion: crd.antrea.io/v1beta1
+kind: AntreaNetworkPolicy
+metadata:
+  name: music-store-internal-egress
+spec:
+  tier: application
+  priority: 40
+  
+  # Allow Chat Service Egress to External AI Endpoint and Internal DB/Order
+  - appliedTo:
+      - podSelector:
+          matchLabels:
+            app: chat-service
+    egress:
+      - action: Allow
+        to:
+          - podSelector:
+              matchLabels:
+                app: postgres
+        ports:
+          - protocol: TCP
+            port: 5432 # [cite: 7]
+      - action: Allow
+        to:
+          - podSelector:
+              matchLabels:
+                app: order-service
+        ports:
+          - protocol: TCP
+            port: 5001  # [cite: 7]
+      - action: Allow
+        ports:
+          - protocol: TCP
+            port: 443 # External HTTPS for Private AI API[cite: 7]
+
+  # Egress for Traffic Generator
+  - appliedTo:
+      - podSelector:
+          matchLabels:
+            app: traffic-generator
+    egress:
+      - action: Allow
+        to:
+          - podSelector:
+              matchLabels:
+                app: music-store-1
+          - podSelector:
+              matchLabels:
+                app: cart-service
+          - podSelector:
+              matchLabels:
+                app: order-service
+          - podSelector:
+              matchLabels:
+                app: users-service

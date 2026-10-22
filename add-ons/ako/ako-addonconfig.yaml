@@ -1,0 +1,22 @@
+apiVersion: addons.kubernetes.vmware.com/v1alpha1
+kind: AddonConfig
+metadata:
+ name: goad-test-02a-ako
+ namespace: tk-test-2
+spec:
+ addonConfigDefinitionRef:
+   name: ako.kubernetes.vmware.com.1.13.4+vmware.1-vks.1
+   namespace: vmware-system-vks-public
+ clusterName: goad-test-02a
+ values:
+   AKOSettings:
+     clusterName: goad-test-02a
+     vpcMode: true
+   
+   ControllerSettings:
+     controllerHost: "10.47.0.180"
+     tenantName: "admin"
+     cloudName: "Cloud-nsx01"
+   
+   NetworkSettings:
+     nsxtT1LR: "/orgs/default/projects/default/vpcs/tk-test-2_fohrl"

@@ -1,0 +1,16 @@
+apiVersion: addons.kubernetes.vmware.com/v1alpha1
+kind: AddonInstall
+metadata:
+ name: ako-installer
+ namespace: tk-test-2
+ labels:
+   app.kubernetes.io/name: ako
+spec:
+ addonRef:
+   name: ako
+ clusters:
+ - selector:
+     matchLabels:
+       environment: production
+       ako-enabled: "true"
+ paused: false

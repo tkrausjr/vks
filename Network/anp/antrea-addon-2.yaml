@@ -1,0 +1,15 @@
+apiVersion: addons.kubernetes.vmware.com/v1alpha1
+kind: AddonConfig
+metadata:
+  name: goad-test-02a-antrea
+  namespace: tk-testing
+spec:
+  values:
+    antreaNSX:
+      enable: true # Set to true if integrating with NSX-T/vDefend
+    antrea:
+      config:
+        trafficEncryptionMode: none # Optional: e.g., wireGuard or none
+        AntreaTraceflow: true
+        AntreaPolicy: true       # Enables advanced policy capabilities in Antrea (Required)
+
