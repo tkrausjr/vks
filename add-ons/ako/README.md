@@ -54,12 +54,10 @@ k get addonconfig
 ```
 ## Label the workload cluster
 ```
-
 k label cluster/goad-test-02a -n tk-test-2 environment=production ako-enabled=true --overwrite=true
     cluster.cluster.x-k8s.io/demo-cl01 labeled
 ```
 ## Validate that the add-ons were installed to the cluster.
-
 
 vcf context use vcfa:addons-testing-vzd34j:default-project
 vcf cluster list
@@ -69,26 +67,46 @@ vcf cluster kubeconfig get goad-test-02a --admin
     Credentials of cluster 'kubernetes-cluster-v32p' have been saved 
     You can now access the cluster by running 'kubectl config use-context goad-test-02a'
 
-
+# Switch to the target cluster now to see what happened.
 k config use-context goad-test-02a-admin@goad-test-02a
-
 k get all -n avi-system
     k get all -n avi-system
     NAME                                    READY   STATUS    RESTARTS   AGE
     pod/ako-0                               2/2     Running   0          5m27s
     pod/ako-crd-operator-8445bd89dd-jhg4x   1/1     Running   0          5m27s
-
     NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
     deployment.apps/ako-crd-operator   1/1     1            1           5m27s
-
     NAME                                          DESIRED   CURRENT   READY   AGE
     replicaset.apps/ako-crd-operator-8445bd89dd   1         1         1       5m27s
-
     NAME                   READY   AGE
     statefulset.apps/ako   1/1     5m27s
 
 k get app -A
 k get pkgi -A
+
+# Create a Gateway object.
+
+k apply -f ./vks/Network/avi-gateway-api/gateway-metal-store.yaml 
+k get gateway -A
+    NAMESPACE   NAME          CLASS    ADDRESS      PROGRAMMED   AGE
+    default     metal-store   avi-lb   10.47.7.25   True         17m
+# # NOTE Now you will see a new VS in Avi on port 80 (Why not 443)
+
+k apply -f ./github/vks/Network/avi-gateway-api/httproute-metal-store.yaml 
+    httproute.gateway.networking.k8s.io/metal-store-frontend created
+
+curl -vvv  metal-store.acme.gpu.set.lab
+    * Could not resolve host: metal-store.acme.gpu.set.lab
+    * Closing connection 0
+    curl: (6) Could not resolve host: metal-store.acme.gpu.set.lab
+
+
+
+
+
+
+
+
 
 
 

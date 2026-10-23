@@ -1,0 +1,20 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: metal-store
+spec:
+  gatewayClassName: avi-lb
+  listeners:
+  - name: metal-store-http
+    protocol: HTTP
+    port: 80
+    hostname: "*.acme.gpu.set.lab"
+  - name: metal-store-https
+    protocol: HTTPS
+    port: 443
+    hostname: "*.acme.gpu.set.lab"
+    tls:
+      certificateRefs:
+      - kind: Secret
+        group: ""
+        name: https-acme.gpu.set.lab-cert
