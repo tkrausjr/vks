@@ -6,6 +6,7 @@ metadata:
 spec:
   parentRefs:
   - name: metal-store
+    namespace: default
   hostnames:
   - "metal-store.acme.gpu.set.lab"
   rules:

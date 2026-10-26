@@ -1,0 +1,9 @@
+apiVersion: addons.kubernetes.vmware.com/v1alpha1
+kind: AddonConfig
+metadata:
+  name: goad-test-02a-antrea
+  namespace: tk-test-2
+spec:
+  values:
+    antreaNSX:  # This config will allow configuring vDefend integration with Antrea CNI. The values below are required for the integration to work.
+      enable: true # Set to true if integrating with NSX-T/vDefend
