@@ -56,7 +56,7 @@ k get all -n avi-system
 k get app -A
 k get pkgi -A
 ```
-# Create a Gateway object.
+##(Optional) Create a Gateway object and httproute
 ```bash
 k apply -f ./vks/Network/avi-gateway-api/gateway-metal-store.yaml 
 k get gateway -A
@@ -73,8 +73,11 @@ curl -vvv  metal-store.acme.gpu.set.lab
     curl: (6) Could not resolve host: metal-store.acme.gpu.set.lab
 ```
 
-
-
+##(Optional) Create an L7 Rule 
+```bash
+k apply -f ./github/vks/Network/avi-gateway-api/metal-store-waf-l7rule.yaml
+    L7Rule.ako.vmware.com/metal-store-waf created
+```
 
 
 
