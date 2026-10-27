@@ -6,22 +6,23 @@ metadata:
 spec:
   gatewayClassName: avi-lb
   listeners:
-  - name: metal-store-http
-    protocol: HTTP
+  - allowedRoutes:
+      namespaces:
+        from: All
+    hostname: '*.acme.gpu.set.lab'
+    name: metal-store-http
     port: 80
-    hostname: "*.acme.gpu.set.lab"
-    allowedRoutes:
+    protocol: HTTP
+  - allowedRoutes:
       namespaces:
         from: All
-  - name: metal-store-https
-    protocol: HTTPS
+    hostname: '*.acme.gpu.set.lab'
+    name: metal-store-https
     port: 443
-    hostname: "*.acme.gpu.set.lab"
-    allowedRoutes:
-      namespaces:
-        from: All
+    protocol: HTTPS
     tls:
       certificateRefs:
-      - kind: Secret
-        group: ""
+      - group: ""
+        kind: Secret
         name: https-acme.gpu.set.lab-cert
+      mode: Terminate
