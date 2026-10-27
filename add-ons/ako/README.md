@@ -3,9 +3,9 @@
 https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-service-administration-and-development/9-0/managing-vsphere-kuberenetes-service-clusters-and-workloads/managing-add-ons-in-vks-clusters/view-available-addons.html
 
 ## Install AKO Add-on
-```
+
 1 - Create a addons-testing vSphere Namespace
-```
+```bash
 cd ~/vks/add-ons/ako
 k apply -f ./avi-ctls-creds-secret.yaml
 k apply -f ./ako-addonconfig.yaml
@@ -24,12 +24,12 @@ k get addoninstall
 k get addonconfig
 ```
 ## Label the workload cluster
-```
+```bash
 k label cluster/goad-test-02a -n tk-test-2 environment=production ako-enabled=true --overwrite=true
     cluster.cluster.x-k8s.io/demo-cl01 labeled
 ```
 ## Validate that the add-ons were installed to the cluster.
-
+```bash
 vcf context use vcfa:addons-testing-vzd34j:default-project
 vcf cluster list
    kubernetes-cluster-v32p
@@ -37,8 +37,9 @@ vcf cluster register-vcfa-jwt-authenticator kubernetes-cluster-v32p
 vcf cluster kubeconfig get goad-test-02a --admin
     Credentials of cluster 'kubernetes-cluster-v32p' have been saved 
     You can now access the cluster by running 'kubectl config use-context goad-test-02a'
-
-# Switch to the target cluster now to see what happened.
+```
+## Switch to the target cluster now to see what happened.
+```bash
 k config use-context goad-test-02a-admin@goad-test-02a
 k get all -n avi-system
     k get all -n avi-system
@@ -54,9 +55,9 @@ k get all -n avi-system
 
 k get app -A
 k get pkgi -A
-
+```
 # Create a Gateway object.
-
+```bash
 k apply -f ./vks/Network/avi-gateway-api/gateway-metal-store.yaml 
 k get gateway -A
     NAMESPACE   NAME          CLASS    ADDRESS      PROGRAMMED   AGE
@@ -70,7 +71,7 @@ curl -vvv  metal-store.acme.gpu.set.lab
     * Could not resolve host: metal-store.acme.gpu.set.lab
     * Closing connection 0
     curl: (6) Could not resolve host: metal-store.acme.gpu.set.lab
-
+```
 
 
 
