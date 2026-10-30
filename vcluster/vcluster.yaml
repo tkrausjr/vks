@@ -1,0 +1,25 @@
+# vcluster.yaml — virtual cluster tuned for VKS cluster goad-test-02a
+#
+# - Backing store PVC pinned to the cluster's default vSAN storage class
+# - API server exposed via Avi/AKO LoadBalancer (gets a 10.47.7.x VIP)
+#
+# Deploy:
+#   kubectl create namespace vcluster-demo
+#   vcluster create demo -n vcluster-demo -f vcluster.yaml
+controlPlane:
+  statefulSet:
+    persistence:
+      volumeClaim:
+        enabled: true
+        storageClass: vsan-esa-default-policy-raid5
+        size: 5Gi
+  service:
+    spec:
+      type: LoadBalancer        # Avi/AKO assigns a 10.47.7.x VIP
+
+  # Optional: use vanilla upstream etcd-backed Kubernetes inside the vCluster
+  # (matches VKS conformance expectations). Omit for the default lightweight
+  # datastore on the PVC above, which is plenty for a lab.
+  # distro:
+  #   k8s:
+  #     enabled: true

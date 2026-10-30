@@ -6,4 +6,5 @@ metadata:
 spec:
   values:
     antreaNSX:  # This config will allow configuring vDefend integration with Antrea CNI. The values below are required for the integration to work.
+    
       enable: true # Set to true if integrating with NSX-T/vDefend
