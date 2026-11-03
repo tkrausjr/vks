@@ -1,0 +1,72 @@
+apiVersion: addons.kubernetes.vmware.com/v1alpha1
+kind: AddonInstall
+metadata:
+  name: cluster-headlamp
+#namespace: demo-01 # Your vSphere namespace
+spec:
+  addonRef:
+    name: headlamp
+  clusters:
+  - selector:
+      matchLabels:
+        addons-install: headlamp
+---
+apiVersion: addons.kubernetes.vmware.com/v1alpha1
+kind: AddonConfig
+metadata:
+  annotations:
+    clusteraddon.addons.kubernetes.vmware.com/owned-for-deletion: "true"
+  name: demo-cluster-01a-headlamp
+# namespace: demo-01 # Your vSphere namespace
+spec:
+  values:
+    headlamp:
+      namespace: "headlamp-system"
+---
+apiVersion: addons.kubernetes.vmware.com/v1alpha1
+kind: AddonInstall
+metadata:
+  name: cluster-cert-manager
+#  namespace: demo-01 # Your vSphere namespace
+spec:
+  addonRef:
+    name: cert-manager
+  clusters:
+  - selector:
+      matchLabels:
+        addons-install: headlamp
+
+---
+apiVersion: addons.kubernetes.vmware.com/v1alpha1
+kind: AddonInstall
+metadata:
+  name: cluster-prom
+#  namespace: demo-01 # Your vSphere namespace
+spec:
+  addonRef:
+    name: prometheus
+  clusters:
+  - selector:
+      matchLabels:
+        addons-install: headlamp
+---
+apiVersion: addons.kubernetes.vmware.com/v1alpha1
+kind: AddonConfig
+metadata:
+  annotations:
+    clusteraddon.addons.kubernetes.vmware.com/owned-for-deletion: "true"
+  name: demo-cluster-01a-prometheus 
+#  namespace: demo-01 # Your vSphere namespace
+spec:
+  values:
+    deploycomponents:
+      kube-state-metrics: true
+      node-exporter: true
+      pushgateway: false
+      prometheus: true
+      alertmanager: true
+      prometheus-operator: true
+    prometheus:
+      service:
+        type: LoadBalancer
+        

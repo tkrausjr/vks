@@ -1,0 +1,44 @@
+apiVersion: cluster.x-k8s.io/v1beta2
+kind: Cluster
+metadata:
+  name: test-addons
+  namespace: demo1-zfmk4
+  labels:
+    addons-install: headlamp
+    sealID: 1467933j
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+        - 10.95.0.0/16
+    services:
+      cidrBlocks:
+        - 10.96.0.0/12
+    serviceDomain: cluster.local
+  topology:
+    classRef:
+      name: builtin-generic-v3.8.0
+      namespace: vmware-system-vks-public
+    version: v1.36.2---vmware.2-vkr.3
+    variables:
+      - name: vmClass
+        value: best-effort-large
+      - name: storageClass
+        value: mgmt-cl01-optimal-datastore-default-policy-autoraid
+    controlPlane:
+      replicas: 1
+      metadata:
+        annotations:
+          run.tanzu.vmware.com/resolve-os-image: os-name=photon
+    workers:
+      machineDeployments:
+        - class: node-pool
+          name: kubernetes-cluster-cscr-np-b85s
+          replicas: 1
+          metadata:
+            annotations:
+              run.tanzu.vmware.com/resolve-os-image: os-name=photon
+          variables:
+            overrides:
+              - name: vmClass
+                value: best-effort-medium

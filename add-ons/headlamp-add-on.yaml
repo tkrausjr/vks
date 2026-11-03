@@ -67,7 +67,7 @@ spec:
       kube-state-metrics: true
       node-exporter: true
       pushgateway: false
-      prometheus: false
+      prometheus: true
       alertmanager: true
       prometheus-operator: true
 ---
