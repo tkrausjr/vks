@@ -1,0 +1,196 @@
+{
+  "title": "Supervisor - New Cluster Creations",
+  "uid": "sup-new-clusters",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": true,
+  "tags": [
+    "supervisor",
+    "audit",
+    "vks"
+  ],
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "refresh": "1m",
+  "description": "Cluster API Cluster objects created in any vSphere Namespace, from the Supervisor kube-apiserver audit log (Fluent Bit -> Alloy -> Loki).",
+  "templating": {
+    "list": [
+      {
+        "name": "ds",
+        "label": "Loki",
+        "type": "datasource",
+        "query": "loki",
+        "current": {},
+        "hide": 0
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "New clusters (selected range)",
+      "datasource": {
+        "type": "loki",
+        "uid": "${ds}"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${ds}"
+          },
+          "expr": "sum(count_over_time({job=\"syslog\", host=~\"4218.*\"} |= `\"verb\":\"create\"` |= `\"stage\":\"ResponseComplete\"` |= `\"code\":201` |= `cluster.x-k8s.io` | regexp `\"requestURI\":\"/apis/cluster\\.x-k8s\\.io/[^/]+/namespaces/(?P<ns>[^/]+)/clusters[?\"]` | ns != \"\" [$__range]))",
+          "refId": "A",
+          "editorMode": "code",
+          "queryType": "instant"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "barchart",
+      "title": "Cluster creations by namespace",
+      "datasource": {
+        "type": "loki",
+        "uid": "${ds}"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 18,
+        "x": 6,
+        "y": 0
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${ds}"
+          },
+          "expr": "sum by (ns) (count_over_time({job=\"syslog\", host=~\"4218.*\"} |= `\"verb\":\"create\"` |= `\"stage\":\"ResponseComplete\"` |= `\"code\":201` |= `cluster.x-k8s.io` | regexp `\"requestURI\":\"/apis/cluster\\.x-k8s\\.io/[^/]+/namespaces/(?P<ns>[^/]+)/clusters[?\"]` | ns != \"\" [$__interval]))",
+          "refId": "A",
+          "editorMode": "code",
+          "legendFormat": "{{ns}}",
+          "queryType": "range"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "noValue": "0"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Cluster creations over time",
+      "datasource": {
+        "type": "loki",
+        "uid": "${ds}"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${ds}"
+          },
+          "expr": "sum by (ns) (count_over_time({job=\"syslog\", host=~\"4218.*\"} |= `\"verb\":\"create\"` |= `\"stage\":\"ResponseComplete\"` |= `\"code\":201` |= `cluster.x-k8s.io` | regexp `\"requestURI\":\"/apis/cluster\\.x-k8s\\.io/[^/]+/namespaces/(?P<ns>[^/]+)/clusters[?\"]` | ns != \"\" [$__interval]))",
+          "refId": "A",
+          "editorMode": "code",
+          "legendFormat": "{{ns}}",
+          "queryType": "range"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "noValue": "0",
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 60,
+            "stacking": {
+              "mode": "normal"
+            }
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 4,
+      "type": "logs",
+      "title": "Who created which cluster",
+      "datasource": {
+        "type": "loki",
+        "uid": "${ds}"
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${ds}"
+          },
+          "expr": "{job=\"syslog\", host=~\"4218.*\"} |= `\"verb\":\"create\"` |= `\"stage\":\"ResponseComplete\"` |= `\"code\":201` |= `cluster.x-k8s.io` | regexp `\"requestURI\":\"/apis/cluster\\.x-k8s\\.io/[^/]+/namespaces/(?P<ns>[^/]+)/clusters[?\"]` | ns != \"\" | regexp `\"user\":\\{\"username\":\"(?P<user>[^\"]+)\"` | regexp `\"metadata\":\\{\"name\":\"(?P<cluster>[^\"]+)\"` | line_format `namespace={{.ns}}  cluster={{.cluster}}  user={{.user}}`",
+          "refId": "A",
+          "editorMode": "code",
+          "queryType": "range"
+        }
+      ],
+      "options": {
+        "showTime": true,
+        "wrapLogMessage": true,
+        "sortOrder": "Descending",
+        "enableLogDetails": true,
+        "dedupStrategy": "none"
+      }
+    }
+  ]
+}

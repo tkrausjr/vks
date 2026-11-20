@@ -1,0 +1,53 @@
+alloy:
+  configMap:
+    content: |
+      loki.source.syslog "rfc5424" {
+        listener {
+          address                = "0.0.0.0:1514"
+          protocol               = "tcp"
+          syslog_format          = "rfc5424"
+          use_incoming_timestamp = true
+          labels                 = { job = "syslog" }
+        }
+        listener {
+          address       = "0.0.0.0:1515"
+          protocol      = "udp"
+          syslog_format = "rfc5424"
+          labels        = { job = "syslog" }
+        }
+        relabel_rules = loki.relabel.syslog.rules
+        forward_to    = [loki.write.local.receiver]
+      }
+
+      loki.relabel "syslog" {
+        forward_to = []
+        rule {
+          source_labels = ["__syslog_message_hostname"]
+          target_label  = "host"
+        }
+        rule {
+          source_labels = ["__syslog_message_app_name"]
+          target_label  = "app"
+        }
+        rule {
+          source_labels = ["__syslog_message_severity"]
+          target_label  = "severity"
+        }
+        rule {
+          source_labels = ["__syslog_connection_ip_address"]
+          target_label  = "source_ip"
+        }
+      }
+
+      loki.write "local" {
+        endpoint {
+          url = "http://loki.logging.svc:3100/loki/api/v1/push"
+        }
+      }
+  extraPorts:
+    - { name: syslog-tcp, port: 1514, targetPort: 1514, protocol: TCP }
+    - { name: syslog-udp, port: 1515, targetPort: 1515, protocol: UDP }
+controller:
+  type: deployment
+service:
+  type: LoadBalancer
