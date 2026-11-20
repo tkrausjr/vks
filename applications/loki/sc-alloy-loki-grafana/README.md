@@ -90,7 +90,7 @@ curl http://10.47.7.48:3100/ready
     ready
 ```
 
-In Grafana, add new Data Source --> Type=Loki --> URL=http://<LOKI-EXTERNAL-Service-IP>:3100
+In Grafana, add new Data Source --> Type=Loki --> URL=http://[<LOKI-EXTERNAL-Service-IP>:3100](http://10.47.7.48:3100)
 
 Then you can open Explore → Loki and run {job="syslog"}. You can filter with {app="myapp"} or {severity="info"}.
 
